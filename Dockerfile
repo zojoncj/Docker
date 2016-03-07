@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get -q -y update && \
     apt-get -q -y install \
     ca-certificates php7.0-cli php7.0-fpm php7.0-gd php7.0-mbstring php7.0-mysql php7.0-pgsql php7.0-sqlite \
-    wget sqlite git libsqlite3-dev curl supervisor cron unzip && \
+    wget sqlite git libsqlite3-dev curl supervisor cron unzip nginx && \
     apt-get clean && apt-get autoremove -q && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /tmp/*
 
@@ -37,7 +37,13 @@ COPY docker/crontab /etc/cron.d/artisan-schedule
 
 RUN chmod 0644 /etc/cron.d/artisan-schedule &&\
     touch /var/log/cron.log &&\
+    echo "daemon off;" >> /etc/nginx/nginx.conf && \
+    rm -f /etc/nginx/sites-enabled/* && \
+    rm -f /etc/nginx/conf.d/* && \
     chown www-data /var/www/html/.env
+
+
+COPY docker/nginx-site.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8000
 
