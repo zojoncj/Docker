@@ -25,10 +25,10 @@ WORKDIR /var/www/html/
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php
 
-RUN wget https://github.com/cachethq/Cachet/archive/master.tar.gz && \
-    tar xzvf master.tar.gz --strip-components=1 && \
+RUN wget https://github.com/CachetHQ/Cachet/archive/v2.1.2.tar.gz && \
+    tar xzvf v2.1.2.tar.gz --strip-components=1 && \
     chown -R www-data /var/www/html && \
-    rm -r master.tar.gz && \
+    rm -r v2.1.2.tar.gz && \
     php composer.phar install --no-dev -o
 
 COPY docker/entrypoint.sh /sbin/entrypoint.sh
@@ -45,6 +45,6 @@ RUN chmod 0644 /etc/cron.d/artisan-schedule &&\
 
 COPY docker/nginx-site.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8000
+EXPOSE 80
 
 CMD ["/sbin/entrypoint.sh"]
