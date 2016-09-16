@@ -16,7 +16,10 @@ sed 's,{{MAIL_USERNAME}},'"${MAIL_USERNAME}"',g' -i /var/www/html/.env
 sed 's,{{MAIL_PASSWORD}},'"${MAIL_PASSWORD}"',g' -i /var/www/html/.env
 sed 's,{{MAIL_ADDRESS}},'"${MAIL_ADDRESS}"',g' -i /var/www/html/.env
 
-php composer.phar install --no-dev -o
+php artisan down
+php composer.phar install --no-dev -o --no-scripts
+php artisan app:update
+php artisan up
 
 echo "Starting supervisord..."
 exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && \
     apt-get -q -y update && \
     apt-get -q -y install \
-    ca-certificates php7.0-cli php7.0-fpm php7.0-gd php7.0-mbstring php7.0-mysql php7.0-pgsql php7.0-sqlite \
+    ca-certificates php7.0-cli php7.0-fpm php7.0-gd php7.0-mbstring php7.0-mysql php7.0-pgsql php7.0-sqlite php7.0-xm \
     wget sqlite git libsqlite3-dev curl supervisor cron unzip nginx && \
     apt-get clean && apt-get autoremove -q && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /tmp/*
@@ -25,11 +25,12 @@ WORKDIR /var/www/html/
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php
 
-RUN wget https://github.com/CachetHQ/Cachet/archive/v2.1.2.tar.gz && \
-    tar xzvf v2.1.2.tar.gz --strip-components=1 && \
+#RUN wget https://github.com/zojoncj/Cachet/archive/master.tar.gz && \
+RUN wget https://github.com/zojoncj/Cachet/archive/2.4.tar.gz && \
+    tar xzvf 2.4.tar.gz --strip-components=1 && \
     chown -R www-data /var/www/html && \
-    rm -r v2.1.2.tar.gz && \
-    php composer.phar install --no-dev -o
+    rm -r 2.4.tar.gz && \
+    php composer.phar install --no-dev -o --no-scripts
 
 COPY docker/entrypoint.sh /sbin/entrypoint.sh
 COPY docker/.env.docker /var/www/html/.env
